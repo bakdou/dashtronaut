@@ -15,21 +15,12 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '17'
+          java-version: '11'
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
-          android: true
-
-      - name: Accept Android licenses
-        run: yes | flutter doctor --android-licenses
-
-      - name: Upgrade Gradle version for Java 17 compatibility
-        run: |
-          sed -i 's/gradle-6.7-all.zip/gradle-7.6.3-all.zip/g' android/gradle/wrapper/gradle-wrapper.properties
-          sed -i 's/gradle-6.7-bin.zip/gradle-7.6.3-bin.zip/g' android/gradle/wrapper/gradle-wrapper.properties
+          flutter-version: '2.10.5'
 
       - name: Install dependencies
         run: flutter pub get
