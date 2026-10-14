@@ -26,11 +26,9 @@ jobs:
       - name: Accept Android licenses
         run: yes | flutter doctor --android-licenses
 
-      - name: Fix deprecated plugin loader for modern Flutter
+      - name: Force Gradle version upgrade to 7.6.3
         run: |
-          if [ -f "android/app/build.gradle" ]; then
-            sed -i '/app_plugin_loader.gradle/d' android/app/build.gradle
-          fi
+          sed -i 's|distributionUrl=.*|distributionUrl=https\\://services.gradle.org/distributions/gradle-7.6.3-bin.zip|g' android/gradle/wrapper/gradle-wrapper.properties
 
       - name: Install dependencies
         run: flutter pub get
