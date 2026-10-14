@@ -1,4 +1,4 @@
-name: Build Android APK (Universal Adaptive)
+name: Build Android APK
 
 on:
   workflow_dispatch:
@@ -21,19 +21,15 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          android: true
 
       - name: Accept Android licenses
         run: yes | flutter doctor --android-licenses
 
       - name: Auto-patch Gradle and legacy plugins for modern compatibility
         run: |
-          # 1. Mise à niveau de Gradle vers la version 7.6.3 (compatible Java 17)
           if [ -f "android/gradle/wrapper/gradle-wrapper.properties" ]; then
             sed -i 's|distributionUrl=.*|distributionUrl=https\\://services.gradle.org/distributions/gradle-7.6.3-bin.zip|g' android/gradle/wrapper/gradle-wrapper.properties
           fi
-
-          # 2. Suppression des anciens chargeurs de plugins incompatibles avec Flutter 3+
           find android -name "build.gradle" -exec sed -i '/app_plugin_loader.gradle/d' {} +
           find android -name "build.gradle" -exec sed -i '/flutter.gradle/d' {} +
 
