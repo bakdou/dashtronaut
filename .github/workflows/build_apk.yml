@@ -15,12 +15,22 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '2.10.5'
+          channel: 'stable'
+          android: true
+
+      - name: Accept Android licenses
+        run: yes | flutter doctor --android-licenses
+
+      - name: Fix deprecated plugin loader for modern Flutter
+        run: |
+          if [ -f "android/app/build.gradle" ]; then
+            sed -i '/app_plugin_loader.gradle/d' android/app/build.gradle
+          fi
 
       - name: Install dependencies
         run: flutter pub get
